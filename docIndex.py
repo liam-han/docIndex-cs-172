@@ -28,7 +28,6 @@ def remove_stop_words(document):
 
 
 def readFiles():
-
     Documents = []
     path = '/Users/liamhan/PycharmProjects/untitled6/data/*.txt'
     files = glob.glob(path)
