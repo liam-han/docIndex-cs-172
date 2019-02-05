@@ -1,6 +1,9 @@
 import glob
 import sys
 from collections import Counter
+import time
+from collections import defaultdict
+
 
 '''class docIndex:
     def __init__(self):
@@ -50,11 +53,20 @@ doc = g
 documentIDs = dict()
 for d in doc:
     for e in d:
-        #print(doc.index(d))
-        documentIDs[e]= doc.index(d)
+        key = e
+        if key not in documentIDs:
+            documentIDs[key]= [doc.index(d)]
+        else:
+            documentIDs[key].append(doc.index(d))
 
-for key, value in documentIDs.iteritems():
+for key, value in documentIDs.items():
+            print(key,value)
+           # time.sleep(.3)
+
+        
+'''for key, value in documentIDs.items():
     print(key, value)
+    time.sleep(.5)'''
 
 
 
