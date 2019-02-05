@@ -1,6 +1,5 @@
-a = ['apple', 'peach', 'apple']
-b = ['apple']
-a.remove('apple')
-print(a)
-words = set(a) & set(b)
-print(words)
+a = [['apple', 'peach', 'apple'], ['baron']]
+
+for x in a:
+    for y in x:
+        print(a.index(x))

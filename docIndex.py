@@ -1,5 +1,27 @@
 import glob
 import sys
+from collections import Counter
+
+'''class docIndex:
+    def __init__(self):
+        self '''
+
+
+def remove_stop_words(document):
+    stop_words_txt = 'stoplist.txt'
+    stop_words = []
+
+    with open(stop_words_txt, 'r') as f:
+        for line in f:
+            for word in line.split():
+                stop_words.append(word)
+
+    #similar_words = set(stop_words) & set(document)
+
+    for a in stop_words:
+        for b in document:
+            if a == b:
+                document.remove(a)
 
 
 def readFiles():
@@ -22,31 +44,18 @@ def readFiles():
     return Documents
 
 
-
-def remove_stop_words(document):
-    stop_words_txt = 'stoplist.txt'
-    stop_words = []
-
-    with open(stop_words_txt, 'r') as f:
-        for line in f:
-            for word in line.split():
-                stop_words.append(word)
-
-    #similar_words = set(stop_words) & set(document)
-
-    for a in stop_words:
-        for b in document:
-            if a == b:
-                document.remove(a)
-
-
-
-
 g = readFiles()
-test = g
+#X = Counter(g[0])
+doc = g
+documentIDs = dict()
+for d in doc:
+    for e in d:
+        #print(doc.index(d))
+        documentIDs[e]= doc.index(d)
 
-print(test)
-for x in test:
-    remove_stop_words(x)
+for key, value in documentIDs.iteritems():
+    print(key, value)
 
-print(test)
+
+
+
