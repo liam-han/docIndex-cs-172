@@ -109,18 +109,18 @@ class LinkedList:
         return s
            
 
-test = {'word': [1,2,3,4,4], 'anotherword': [2,2,4,4,5]}
+test = {'word': [1,2,3,4,4,4,4,4,4,4,4,4,4,4,4], 'anotherword': [2,2,4,4,5]}
 postings = []
 for key, value in test.items():
     test_2 = Counter(value)
     list = LinkedList()
     for key, value in test_2.items():
-        list.AddNode([key, value])
+        list.add([key, value])
     postings.append(list)
     
 '''for x in postings:
     x.print_2()
     print('break')'''
-
+postings[0].print() 
 gasdf = postings[0].sum()
 print(gasdf)
