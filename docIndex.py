@@ -49,20 +49,39 @@ def readFiles():
 g = readFiles()
 #X = Counter(g[0])
 doc = g
-documentIDs = dict()
+temp_documentIDs = dict()
 for d in doc:
     for e in d:
         key = e
-        if key not in documentIDs:
-            documentIDs[key]= [doc.index(d)]
-        else:
-            documentIDs[key].append(doc.index(d))
+        if key not in temp_documentIDs:
+            temp_documentIDs[key]= [doc.index(d)]
+        else: 
+            temp_documentIDs[key].append(doc.index(d))
 
+documentIDs = dict()
+postings = [(0,2)] * 8000 
+index = 0
+
+new_list = []
+url_set = set()
+
+result = set(x for l in doc for x in l)
+
+c = 0
+for d in result:
+        key = d
+        documentIDs[key]= postings[c]
+        c+=1
 for key, value in documentIDs.items():
-            print(key,value)
+    print(postings[0])
+
+#for key, value in documentIDs.items():
+           # print(key,value)
            # time.sleep(.3)
 
-        
+
+
+
 '''for key, value in documentIDs.items():
     print(key, value)
     time.sleep(.5)'''
