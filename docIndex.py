@@ -3,11 +3,75 @@ import sys
 from collections import Counter
 import time
 from collections import defaultdict
+import math
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
 
-'''class docIndex:
+class LinkedList:
     def __init__(self):
-        self '''
+        self.head = None
+        self.tail = None
+
+    def add(self, data):
+        n = Node(data)
+        if self.head == None:
+            self.head = n
+            self.tail = n
+        else:
+            self.tail.next = n
+            self.tail = n
+
+    def print(self):
+        n = self.head
+        if n.next is None:
+            print(n.data)
+            quit
+        while n.next != None:
+            print (n.data)
+            n = n.next
+            if n.next is None:
+                print(n.data)
+
+    def sum(self):
+        n = self.head
+        s = 0
+        if n.next is None:
+            s+=n.data[1]
+        while n.next != None:
+            s += n.data[1]
+            n = n.next
+            if n.next is None:
+                s += n.data[1]
+
+        return s
+    
+    def sum_documents(self):
+        n = self.head
+        s = 0
+        if n.next is None:
+            s+=1
+        while n.next != None:
+            s += 1
+            n = n.next
+            if n.next is None:
+                s += 1
+
+        return s
+
+    def find_frequency(self, num):
+        n = self.head
+        if n.next is None and n.data[0] is num:
+            return n.data[1]
+        while n.next != None:
+            if n.data[0] is num:
+                return n.data[1]
+            n = n.next
+            if n.next is None and n.data[0] is num:
+                return n.data[1]
+       
 
 
 def remove_stop_words(document):
@@ -27,9 +91,10 @@ def remove_stop_words(document):
                 document.remove(a)
 
 
-def readFiles():
+def readFiles(path):
     Documents = []
-    path = '/Users/liamhan/PycharmProjects/untitled6/data/*.txt'
+    #path = '/Users/liamhan/Desktop/data/*.txt'
+    path = (path + '/*.txt')
     files = glob.glob(path)
     files.sort()
     for document in files:
@@ -37,7 +102,7 @@ def readFiles():
             with open(document, 'r') as f:
                 temp = []
                 for line in f:
-                    for word in line.split():
+                    for word in line.lower().split():
                         temp.append(word)
                 Documents.append(temp)
         except IOError:
@@ -46,7 +111,38 @@ def readFiles():
     return Documents
 
 
-g = readFiles()
+def docIndex(documents):
+    docIndex = dict()
+    for doc in documents:
+        l = len(doc)
+        ind = (documents.index(doc)) + 1
+        docIndex[ind] = l
+
+    return docIndex
+
+
+
+def term_frequency(document, word):
+    count = 0
+    for w in document:
+        if w == word:
+            count+=1
+    freq = count/(len(document))
+
+    return freq
+
+def idf(docindex, occurrence):
+    docind = len(docindex)
+    idf = math.log10(docind/occurrence)
+
+    return idf
+
+def tfidf(tf, idf):
+    tfidf = tf*idf 
+    return tfidf
+
+path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
+g = readFiles(path)
 #X = Counter(g[0])
 doc = g
 temp_documentIDs = dict()
@@ -54,38 +150,27 @@ for d in doc:
     for e in d:
         key = e
         if key not in temp_documentIDs:
-            temp_documentIDs[key]= [doc.index(d)]
+            temp_documentIDs[key]= [doc.index(d)+ 1]
         else: 
-            temp_documentIDs[key].append(doc.index(d))
+            temp_documentIDs[key].append(doc.index(d)+1)
 
-documentIDs = dict()
-postings = [(0,2)] * 8000 
-index = 0
 
-new_list = []
-url_set = set()
-
-result = set(x for l in doc for x in l)
-
+postings = []
+temp_postings = []
+wordIndex = dict()
 c = 0
-for d in result:
-        key = d
-        documentIDs[key]= postings[c]
-        c+=1
-for key, value in documentIDs.items():
-    print(postings[0])
-
-#for key, value in documentIDs.items():
-           # print(key,value)
-           # time.sleep(.3)
-
-
-
-
-'''for key, value in documentIDs.items():
-    print(key, value)
-    time.sleep(.5)'''
-
+for key, value in temp_documentIDs.items():
+    test_2 = Counter(value)
+    list = LinkedList()
+    temp = []
+    for key2, value2 in test_2.items():
+        list.add([key2, value2])
+        temp.append([key2, value2])
+    sumdocuments = list.sum_documents()
+    postings.append(list)
+    temp_postings.append(temp)
+    wordIndex[key] = [sumdocuments, postings[c]]
+    c+=1
 
 
 
