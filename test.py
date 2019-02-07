@@ -8,15 +8,22 @@ def main():
         try:
             result = d.wordIndex.get(user_input)
             freq = result[0]
+            
             di = d.docIndex(d.doc)
-            
-            #tf = d.term_frequency()
-            idf = d.idf(di, freq)  #result[1] are the postings for words
-            
-            w = str(user_input)
-            result[1].print()
+        
+            r = result[1].getvalue()
 
-            print('[' +  w  +  ']' +  " appears in " + '' + str(result[0]) + " document(s) ")
+            for x,y in r:
+                print('Postings: ', end = '')
+                i_d_f  = round(d.idf(di, freq),5)
+                t_f = round(d.term_frequency(d.doc[x-1], y),5)
+                tf_idf = round(d.tfidf(t_f, i_d_f),5)
+              #result[1] are the postings for words
+                
+                print((str([x,y]),t_f, i_d_f, tf_idf))
+               
+            #result[1].print()
+            print('[' +  str(user_input)  +  ']' +  " appears in " + '' + str(result[0]) + " document(s) ")
         except:
             print('Entered word is not in the word index, try again:')
             pass

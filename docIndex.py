@@ -35,6 +35,26 @@ class LinkedList:
             if n.next is None:
                 print(n.data)
 
+    def getvalue(self):
+    
+        arr = []
+        n = self.head
+        if n.next is None:
+            nn = n.data
+            arr.append(nn)
+            
+            quit
+        while n.next != None:
+            
+            nn = n.data
+            arr.append(nn)
+            n = n.next
+            if n.next is None:
+                
+                nn = n.data
+                arr.append(nn)
+        return arr
+
     def sum(self):
         n = self.head
         s = 0
@@ -122,22 +142,19 @@ def docIndex(documents):
 
 
 
-def term_frequency(document, word):
-    count = 0
-    for w in document:
-        if w == word:
-            count+=1
-    freq = count/(len(document))
-
+def term_frequency(document, docfreq):
+    
+    freq = docfreq/len(document)
+    
     return freq
 
-def idf(docindex, occurrence):
-    docind = len(docindex)
-    idf = math.log10(docind/occurrence)
+def idf(d, occurrence):
+    size = len(d)
+    idf = math.log10(size/occurrence)
 
     return idf
 
-def tfidf(tf, idf):
+def tfidf(tf, idf): 
     tfidf = tf*idf 
     return tfidf
 
@@ -153,6 +170,7 @@ for d in doc:
             temp_documentIDs[key]= [doc.index(d)+ 1]
         else: 
             temp_documentIDs[key].append(doc.index(d)+1)
+
 
 
 postings = []
@@ -171,6 +189,5 @@ for key, value in temp_documentIDs.items():
     temp_postings.append(temp)
     wordIndex[key] = [sumdocuments, postings[c]]
     c+=1
-
 
 
