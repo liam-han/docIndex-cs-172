@@ -14,7 +14,7 @@ def main():
             r = result[1].getvalue()
 
             for x,y in r:
-                print('Postings: ', end = '')
+                
                 i_d_f  = round(d.idf(di, freq),5)
                 t_f = round(d.term_frequency(d.doc[x-1], y),5)
                 tf_idf = round(d.tfidf(t_f, i_d_f),5)
