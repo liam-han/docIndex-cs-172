@@ -94,30 +94,38 @@ class LinkedList:
        
 
 
-def remove_stop_words(document):
-    stop_words_txt = 'stoplist.txt'
+def remove_stop_words(stopwords_txt, document):
     stop_words = []
 
-    with open(stop_words_txt, 'r') as f:
+
+    with open(stopwords_txt, 'r') as f:
         for line in f:
             for word in line.split():
                 stop_words.append(word)
 
     #similar_words = set(stop_words) & set(document)
+    for doc in document:
+        for a in stop_words:
+            for b in doc:
+                if a == b:
+                    doc.remove(b)
 
-    for a in stop_words:
-        for b in document:
-            if a == b:
-                document.remove(a)
-
-
+    return document
+ 
+ 
 def readFiles(path):
     Documents = []
     #path = '/Users/liamhan/Desktop/data/*.txt'
-    path = (path + '/*.txt')
-    files = glob.glob(path)
+    files = glob.glob(path+'/*.txt')
     files.sort()
+    stop_words = files[-1]
+    files.remove(stop_words)
+
+    #files.remove('/Users/liamhan/Desktop/data/stoplist.txt')
+
+
     for document in files:
+        
         try:
             with open(document, 'r') as f:
                 temp = []
@@ -128,8 +136,9 @@ def readFiles(path):
         except IOError:
             print("Unexpected error:", sys.exc_info()[0])
 
-    return Documents
+    remove_stop_words(stop_words, Documents)
 
+    return Documents
 
 def docIndex(documents):
     docIndex = dict()
@@ -139,7 +148,6 @@ def docIndex(documents):
         docIndex[ind] = l
 
     return docIndex
-
 
 
 def term_frequency(document, docfreq):
@@ -159,9 +167,8 @@ def tfidf(tf, idf):
     return tfidf
 
 path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
-g = readFiles(path)
-#X = Counter(g[0])
-doc = g
+doc = readFiles(path)
+
 temp_documentIDs = dict()
 for d in doc:
     for e in d:
