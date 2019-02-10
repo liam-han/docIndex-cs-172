@@ -4,6 +4,7 @@ from collections import Counter
 import time
 from collections import defaultdict
 import math
+
 class Node:
     def __init__(self, data):
         self.data = data
