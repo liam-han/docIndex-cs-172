@@ -122,9 +122,6 @@ def readFiles(path):
     stop_words = files[-1]
     files.remove(stop_words)
 
-    #files.remove('/Users/liamhan/Desktop/data/stoplist.txt')
-
-
     for document in files:
         
         try:
