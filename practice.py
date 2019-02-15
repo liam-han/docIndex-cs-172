@@ -1,5 +1,7 @@
 import nltk
 from nltk.stem.porter import PorterStemmer
+nltk.download ('punkt')
+
 
 porter_stemmer = PorterStemmer()
 
@@ -8,8 +10,12 @@ word_data = "It originated from the idea that there are readers who prefer learn
 # First Word tokenization
 nltk_tokens = nltk.word_tokenize(word_data)
 #Next find the roots of the word
+user_input = input('enter string')
+user_input = porter_stemmer.stem(user_input)
+print(user_input)
 for w in nltk_tokens:
-       print (w, end= ' ') 
-       print(porter_stemmer.stem(w))
+       if porter_stemmer.stem(w) == user_input:
+              print(porter_stemmer.stem(w))
+              print(w)
 
 
