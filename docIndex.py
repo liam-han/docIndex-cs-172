@@ -111,7 +111,7 @@ def remove_stop_words(document):
                 document.remove(a)
 
 
-def readFiles(path):
+def readFiles(path: '/Users/liamhan/Desktop/data') -> 'Documents = []':
     Documents = []
     #path = '/Users/liamhan/Desktop/data/*.txt'
     path = (path + '/*.txt')
@@ -132,7 +132,7 @@ def readFiles(path):
 
 
 
-def docIndex(documents):
+def docIndex(documents) -> 'documentIndex':
     
     docIndex = dict()
     for doc in documents:
@@ -149,14 +149,14 @@ def term_frequency(document, docfreq):
     return freq
 
 
-def idf(d, occurrence):
+def idf(d, occurrence) -> float:
     size = len(d)
     idf = math.log10(size / occurrence)
 
     return idf
 
 
-def tfidf(tf, idf):
+def tfidf(tf, idf) -> float:
     tfidf = tf * idf
     return tfidf
 
@@ -164,7 +164,7 @@ def tfidf(tf, idf):
 path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
 files = readFiles(path)
 
-def wordIndex(doc):
+def wordIndex(doc: 'Array of documents') -> 'word Index':
     temp_documentIDs = dict()
     for d in doc:
         for e in d:
