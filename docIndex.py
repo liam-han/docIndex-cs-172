@@ -109,7 +109,7 @@ def remove_stop_words(document):
                 document.remove(a)
 
 
-def readFiles(path: '/Users/liamhan/Desktop/data') -> 'Documents = []':
+def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
     Documents = []
     #path = '/Users/liamhan/Desktop/data/*.txt'
     path = (path + '/*.txt')
@@ -161,6 +161,7 @@ def tfidf(tf, idf) -> float:
 
 path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
 files = readFiles(path)
+
 
 def wordIndex(doc: readFiles) -> dict():
     temp_documentIDs = dict()
