@@ -11,11 +11,10 @@ class Node:
         self.data = data
         self.next = None
 
-
 class LinkedList:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.head = None 
+        self.tail = None 
 
     def add(self, data):
         n = Node(data)
@@ -132,8 +131,8 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> 'Documents = []':
 
 
 
-def docIndex(documents) -> 'documentIndex':
-    
+def docIndex(documents) -> dict():
+
     docIndex = dict()
     for doc in documents:
         l = len(doc)
@@ -156,7 +155,7 @@ def idf(d, occurrence) -> float:
     return idf
 
 
-def tfidf(tf, idf) -> float:
+def tfidf(tf, idf) -> float: 
     tfidf = tf * idf
     return tfidf
 
@@ -164,7 +163,7 @@ def tfidf(tf, idf) -> float:
 path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
 files = readFiles(path)
 
-def wordIndex(doc: 'Array of documents') -> 'word Index':
+def wordIndex(doc: readFiles) -> dict():
     temp_documentIDs = dict()
     for d in doc:
         for e in d:

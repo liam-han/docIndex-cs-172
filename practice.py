@@ -21,7 +21,7 @@ for w in nltk_tokens:
 
 '''
 ok = 2
-def test(a: [[]], b: int) -> str:
+def test(a: ok, b: dict()) -> str:
        producct = a*b
 
        return producct
