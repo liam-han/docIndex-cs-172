@@ -130,7 +130,6 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
 
     stop_words = Documents[-1]
     del Documents[-1]
-    print(stop_words) 
     for doc in Documents:
         remove_stop_words(stop_words, doc)
   
