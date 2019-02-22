@@ -92,18 +92,18 @@ class LinkedList:
                 return n.data[1]
 
 
-def remove_stop_words(document):
-    stop_words_txt = 'stoplist.txt'
+def remove_stop_words(stopwords, document):
+    '''stop_words_txt = 'stoplist.txt'
     stop_words = []
 
     with open(stop_words_txt, 'r') as f:
         for line in f:
             for word in line.split():
                 stop_words.append(word)
-
+'''
     # similar_words = set(stop_words) & set(document)
 
-    for a in stop_words:
+    for a in stopwords:
         for b in document:
             if a == b:
                 document.remove(a)
@@ -115,6 +115,8 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
     path = (path + '/*.txt')
     files = glob.glob(path)
     files.sort()
+    
+
     for document in files:
         try:
             with open(document, 'r') as f:
@@ -126,8 +128,13 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
         except IOError:
             print("Unexpected error:", sys.exc_info()[0])
 
+    stop_words = Documents[-1]
+    del Documents[-1]
+    print(stop_words) 
+    for doc in Documents:
+        remove_stop_words(stop_words, doc)
+  
     return Documents
-
 
 
 def docIndex(documents) -> dict():
@@ -159,10 +166,6 @@ def tfidf(tf, idf) -> float:
     return tfidf
 
 
-path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
-files = readFiles(path)
-
-
 def wordIndex(doc: readFiles) -> dict():
     temp_documentIDs = dict()
     for d in doc:
@@ -178,16 +181,18 @@ def wordIndex(doc: readFiles) -> dict():
     wordIndex = dict()
     c = 0
     for key, value in temp_documentIDs.items():
-        test_2 = Counter(value)
-        list = LinkedList()
+        test_2 = Counter(value)               #Groups occurrences of words in dictionary via Counter func. 
+        list = LinkedList()                   #initialize linked-list
         temp = []
-        for key2, value2 in test_2.items():
+        for key2, value2 in test_2.items():  
             list.add([key2, value2])
             temp.append([key2, value2])
         sumdocuments = list.sum_documents()
         postings.append(list)
+       
         temp_postings.append(temp)
-        wordIndex[key] = [sumdocuments, postings[c]]
+        wordIndex[key] = [sumdocuments, postings[c]]        #assign [#documents word appears, pointer to postings list] to wordIndex
         c += 1
 
     return wordIndex
+
