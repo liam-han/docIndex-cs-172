@@ -4,22 +4,30 @@ import docIndex as d
 def main():
     path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
     files = d.readFiles(path)
-    wordIndex = d.wordIndex(files)
+    wordIndex1 = d.wordIndex(files) #initialize wordIndex Object
+    wi = wordIndex1.word_index() #word_index
+    ps = d.PorterStemmer()
     while (1):
         user_input = input('Enter a word: ')
+
+        user_input = ps.stem(user_input)
         
         if user_input == "QUIT" or user_input == "quit":
             exit()
         try:
-            result = wordIndex.get(user_input)
+
+            result = wi.get(user_input)
             freq = result[0]
             di = d.docIndex(files)
             r = result[1].getvalue()
-            
+  
             for x, y in r:
-                i_d_f = round(d.idf(di, freq), 5)
-                t_f = round(d.term_frequency(files[x - 1], y), 5)
-                tf_idf = round(d.tfidf(t_f, i_d_f), 5)
+                i_d_f = round(wordIndex1.idf(di, freq), 5)
+               
+                t_f = round(wordIndex1.term_frequency(y, len(files[x - 1])), 5)
+                
+                tf_idf = round(wordIndex1.tfidf(t_f, i_d_f), 5)
+               
                 # result[1] are the postings for words
 
                 print((str([x, y]), t_f, i_d_f, tf_idf))

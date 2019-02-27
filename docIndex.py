@@ -4,6 +4,10 @@ from collections import Counter
 import time
 from collections import defaultdict
 import math
+import nltk
+from nltk.stem.porter import PorterStemmer
+nltk.download('punkt')
+
 
 class Node:
     def __init__(self, data):
@@ -100,7 +104,7 @@ def remove_stop_words(stopwords, document):
         for line in f:
             for word in line.split():
                 stop_words.append(word)
-'''
+    '''
     # similar_words = set(stop_words) & set(document)
 
     for a in stopwords:
@@ -115,7 +119,7 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
     path = (path + '/*.txt')
     files = glob.glob(path)
     files.sort()
-    
+    porter_stemmer = PorterStemmer()
 
     for document in files:
         try:
@@ -123,7 +127,9 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
                 temp = []
                 for line in f:
                     for word in line.lower().split():
-                        temp.append(word)
+                        word.rstrip('.')
+                        stem_word = porter_stemmer.stem(word)
+                        temp.append(stem_word)
                 Documents.append(temp)
         except IOError:
             print("Unexpected error:", sys.exc_info()[0])
@@ -132,7 +138,8 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
     del Documents[-1]
     for doc in Documents:
         remove_stop_words(stop_words, doc)
-  
+    
+
     return Documents
 
 
@@ -147,51 +154,58 @@ def docIndex(documents) -> dict():
     return docIndex
 
 
-def term_frequency(document, docfreq):
-    freq = docfreq / len(document)
 
-    return freq
+class wordIndex(object):
+    def __init__(self, doc):
+        self.doc = doc
 
+    def word_index(self) -> dict():
+        doc = self.doc
 
-def idf(d, occurrence) -> float:
-    size = len(d)
-    idf = math.log10(size / occurrence)
+        temp_documentIDs = dict()
+        for d in doc:
+            for e in d:
+                key = e
+                if key not in temp_documentIDs:
+                    temp_documentIDs[key] = [doc.index(d) + 1]
+                else:
+                    temp_documentIDs[key].append(doc.index(d) + 1)
 
-    return idf
+        postings = []
+        temp_postings = []
+        wordIndex = dict()
+        c = 0
+        for key, value in temp_documentIDs.items():
+            test_2 = Counter(value)               #Groups occurrences of words in dictionary via Counter func. 
+            list = LinkedList()                   #initialize linked-list
+            temp = []
+            for key2, value2 in test_2.items():  
+                list.add([key2, value2])
+                temp.append([key2, value2])
+            sumdocuments = list.sum_documents()
+            postings.append(list)
+        
+            temp_postings.append(temp)
+            wordIndex[key] = [sumdocuments, postings[c]]        #assign [#documents word appears, pointer to postings list] to wordIndex
+            c += 1
 
+        return wordIndex
 
-def tfidf(tf, idf) -> float: 
-    tfidf = tf * idf
-    return tfidf
-
-
-def wordIndex(doc: readFiles) -> dict():
-    temp_documentIDs = dict()
-    for d in doc:
-        for e in d:
-            key = e
-            if key not in temp_documentIDs:
-                temp_documentIDs[key] = [doc.index(d) + 1]
-            else:
-                temp_documentIDs[key].append(doc.index(d) + 1)
-
-    postings = []
-    temp_postings = []
-    wordIndex = dict()
-    c = 0
-    for key, value in temp_documentIDs.items():
-        test_2 = Counter(value)               #Groups occurrences of words in dictionary via Counter func. 
-        list = LinkedList()                   #initialize linked-list
-        temp = []
-        for key2, value2 in test_2.items():  
-            list.add([key2, value2])
-            temp.append([key2, value2])
-        sumdocuments = list.sum_documents()
-        postings.append(list)
+    def term_frequency(self, docfreq, n):
+        document = self.doc
        
-        temp_postings.append(temp)
-        wordIndex[key] = [sumdocuments, postings[c]]        #assign [#documents word appears, pointer to postings list] to wordIndex
-        c += 1
+        freq = docfreq / n
 
-    return wordIndex
+        return freq
 
+
+    def idf(self, d, occurrence) -> float:
+        size = len(d)
+        idf = 1 + math.log2(size / occurrence)
+
+        return idf
+
+
+    def tfidf(self, tf, idf) -> float: 
+        tfidf = tf * idf
+        return tfidf
