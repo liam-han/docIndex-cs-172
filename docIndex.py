@@ -142,6 +142,40 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
 
     return Documents
 
+def read_collection(file) -> []:
+    Documents = []
+    #path = '/Users/liamhan/Desktop/data/*.txt'
+    #path = (path + '/*.txt')  
+    ps = PorterStemmer()
+    try:
+        with open(file, 'r') as f:
+            
+            t = str.maketrans(".,'`:;", "      ")
+            counter = 0
+            temp = []
+            
+            for line in f.readlines():
+                counter += 1
+                for word in line.lower().split():
+                    if word.startswith('<') or word.endswith('>'):
+                        if word == '</doc>':
+                            Documents.append(temp)
+                            temp = []
+                        del word
+                        continue
+                    word = word.translate(t)
+                    word = word.replace(" ", "")
+                    stem_word = ps.stem(word)
+                    temp.append(stem_word)
+                
+            
+                
+    except IOError:
+        print("Unexpected error:", sys.exc_info()[0])
+
+    print(counter)
+    return Documents
+
 
 def docIndex(documents) -> dict():
 

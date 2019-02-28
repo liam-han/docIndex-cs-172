@@ -3,7 +3,8 @@ import docIndex as d
 
 def main():
     path = input('Enter document(s) file path: (i.e /Users/liamhan/Desktop/data): ')
-    files = d.readFiles(path)
+    #files = d.readFiles(path)
+    files = d.read_collection('ap89_collection')
     wordIndex1 = d.wordIndex(files) #initialize wordIndex Object
     wi = wordIndex1.word_index() #word_index
     ps = d.PorterStemmer()

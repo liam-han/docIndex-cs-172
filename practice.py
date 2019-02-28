@@ -31,13 +31,31 @@ for w in word_data:
 
 
 '''
-def readFiles() -> []:
+def read_query() -> []:
+	Queries = []
+
+	file = 'query_list.txt'
+	try:
+		with open(file, 'r') as f:
+			t = str.maketrans(".,'`:;", "      ")
+			for line in f.readlines():
+				temp = []
+				for word in line.lower().split():
+					word = word.translate(t)
+					word = word.replace(" ", "")
+					temp.append(word)
+				Queries.append(temp[1:])
+				
+	except IOError:
+		print("Unexpected error:", sys.exc_info()[0])
+
+	return Queries
+
+
+def read_collection(file) -> []:
 	Documents = []
 	#path = '/Users/liamhan/Desktop/data/*.txt'
 	#path = (path + '/*.txt')
-	file = 'ap89_collection copy'
-	print(len(file))
-	doc_num = 0
 
 	try:
 		with open(file, 'r') as f:
@@ -47,11 +65,10 @@ def readFiles() -> []:
 			temp = []
 			
 			for line in f.readlines():
-	
 				counter += 1
 				for word in line.lower().split():
 					if word.startswith('<') or word.endswith('>'):
-						if word == '</text>':
+						if word == '</doc>':
 							Documents.append(temp)
 							temp = []
 						del word
@@ -68,5 +85,9 @@ def readFiles() -> []:
 	print(counter)
 	return Documents
 
-g = readFiles()
-print(g)
+file = 'ap89_collection'
+g = read_collection(file)
+Queries = read_query()
+print(g[1])
+
+
