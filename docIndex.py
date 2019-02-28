@@ -127,7 +127,7 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
                 temp = []
                 for line in f:
                     for word in line.lower().split():
-                        word.rstrip('.')
+                        word.rstrip(".',")
                         stem_word = porter_stemmer.stem(word)
                         temp.append(stem_word)
                 Documents.append(temp)
