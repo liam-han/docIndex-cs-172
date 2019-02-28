@@ -1,11 +1,11 @@
 import glob
 import sys
 from collections import Counter
-
+import re
 import time
 from collections import defaultdict
 import math
-
+import string
 
 
 
@@ -35,19 +35,32 @@ def readFiles() -> []:
 	Documents = []
 	#path = '/Users/liamhan/Desktop/data/*.txt'
 	#path = (path + '/*.txt')
-	file = 'ap89_collection'
+	file = 'ap89_collection copy'
 	print(len(file))
+	doc_num = 0
+
 	try:
 		with open(file, 'r') as f:
-		
+			
 			t = str.maketrans(".,'`:;", "      ")
 			counter = 0
-			for line in f:
+			temp = []
+			
+			for line in f.readlines():
+	
 				counter += 1
 				for word in line.lower().split():
+					if word.startswith('<') or word.endswith('>'):
+						if word == '</text>':
+							Documents.append(temp)
+							temp = []
+						del word
+						continue
 					word = word.translate(t)
 					word = word.replace(" ", "")
-					Documents.append(word)
+					temp.append(word)
+				
+			
 				
 	except IOError:
 		print("Unexpected error:", sys.exc_info()[0])
