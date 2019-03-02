@@ -88,6 +88,7 @@ def read_collection(file) -> []:
 file = 'ap89_collection'
 g = read_collection(file)
 Queries = read_query()
-print(g[1])
-
+for query in Queries:
+	for word in query:
+		print(word)
 

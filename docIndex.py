@@ -139,6 +139,7 @@ def readFiles(path: '/Users/liamhan/Desktop/data') -> []:
     for doc in Documents:
         remove_stop_words(stop_words, doc)
     
+    
 
     return Documents
 
@@ -166,15 +167,34 @@ def read_collection(file) -> []:
                     word = word.translate(t)
                     word = word.replace(" ", "")
                     stem_word = ps.stem(word)
-                    temp.append(stem_word)
-                
-            
+                    temp.append(stem_word)         
+    except IOError:
+        print("Unexpected error:", sys.exc_info()[0])
+    stop_words = 'stoplist.txt'
+    for doc in Documents:
+        remove_stop_words(stop_words, doc)
+    
+    return Documents
+
+def read_query() -> []:
+    Queries = []
+
+    file = 'query_list.txt'
+    try:
+        with open(file, 'r') as f:
+            t = str.maketrans(".,'`:;", "      ")
+            for line in f.readlines():
+                temp = []
+                for word in line.lower().split():
+                    word = word.translate(t)
+                    word = word.replace(" ", "")
+                    temp.append(word)
+                Queries.append(temp[1:])
                 
     except IOError:
         print("Unexpected error:", sys.exc_info()[0])
 
-    print(counter)
-    return Documents
+    return Queries
 
 
 def docIndex(documents) -> dict():
@@ -210,7 +230,7 @@ class wordIndex(object):
         wordIndex = dict()
         c = 0
         for key, value in temp_documentIDs.items():
-            test_2 = Counter(value)               #Groups occurrences of words in dictionary via Counter func. 
+            test_2 = Counter(value)              #Groups occurrences of words in dictionary via Counter func. 
             list = LinkedList()                   #initialize linked-list
             temp = []
             for key2, value2 in test_2.items():  
