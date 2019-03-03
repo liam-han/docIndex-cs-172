@@ -178,8 +178,8 @@ def read_collection(file) -> []:
 
 def read_query() -> []:
     Queries = []
-
     file = 'query_list.txt'
+    ps = PorterStemmer()
     try:
         with open(file, 'r') as f:
             t = str.maketrans(".,'`:;", "      ")
@@ -188,7 +188,8 @@ def read_query() -> []:
                 for word in line.lower().split():
                     word = word.translate(t)
                     word = word.replace(" ", "")
-                    temp.append(word)
+                    stem_word = ps.stem(word)
+                    temp.append(stem_word)
                 Queries.append(temp[1:])
                 
     except IOError:
@@ -197,14 +198,13 @@ def read_query() -> []:
     return Queries
 
 
-def docIndex(documents) -> dict():
+def docIndex(document) -> dict():
 
     docIndex = dict()
-    for doc in documents:
-        l = len(doc)
-        ind = (documents.index(doc)) + 1
-        docIndex[ind] = l
-
+    for doc in document:
+        length = len(doc)
+        ind = (document.index(doc)) + 1
+        docIndex[ind] = length
     return docIndex
 
 
