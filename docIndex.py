@@ -258,7 +258,7 @@ class wordIndex(object):
         return tf
 
 
-    def idf(self, total_num_of_documents, num) -> float:
+    def idf(self, total_num_of_documents, num_of_documents_with_term) -> float:
     
         idf = 1 + math.log2(total_num_of_documents / num_of_documents_with_term)
 

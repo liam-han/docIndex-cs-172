@@ -33,15 +33,14 @@ def main():
                 r2 = result2[1].getvalue()
                 
                 for x, y in r2:
-                    print(x,y)
                     if x  == queries.index(query) + 1:  
                         idf2 = round(wordIndex2.idf(len(queries), freq2), 5)
 
                         tf2 = round(wordIndex2.term_frequency(y, len(query)), 5)   
-                        
+
                         print(str(user_input),(str([x, y]), tf2, idf2))     
                         temp.append(idf2)
-                        print(temp)
+                        continue
                     #temp.append((word, str([x, y]), t_f, i_d_f, tf_idf))
                     #temp.append(tf_idf)
                     # result[1] are the postings for words
@@ -50,11 +49,11 @@ def main():
             except:
                 #print('Entered word is not in the word index, try again:')
                 pass
-        print(temp)
         data.append(temp)
     l = len(data)
     print('\n')
     print(l)
+    print(data[0])
 
  
 
