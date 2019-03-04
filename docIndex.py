@@ -149,6 +149,7 @@ def read_collection(file) -> []:
     #path = '/Users/liamhan/Desktop/data/*.txt'
     #path = (path + '/*.txt')  
     ps = PorterStemmer()
+    docno = []
     try:
         with open(file, 'r') as f:
             
@@ -160,6 +161,11 @@ def read_collection(file) -> []:
                 if line.lower().startswith('</doc>'):
                     Documents.append(temp)
                     temp = []
+                if line.lower().startswith('<docno>'):
+                    for word in line.split():
+                        line.replace("<docno>", " ")
+                        line.replace("</docno>", " ")
+                        docno.append(word)
                 if line.startswith('<'):
                     continue
                 counter += 1
@@ -177,8 +183,13 @@ def read_collection(file) -> []:
     stop_words = 'stoplist.txt'
     for doc in Documents:
         remove_stop_words(stop_words, doc)
+    doc_id = []
+    for num in docno:
+        if not num.startswith('<'):
+            doc_id.append(num)
     
-    return Documents
+    
+    return Documents, doc_id
 
 def read_query() -> []:
     Queries = []
@@ -195,7 +206,8 @@ def read_query() -> []:
                     word = word.replace(" ", "")
                     stem_word = ps.stem(word)
                     temp.append(stem_word)
-                query_number.append(temp[:1])
+                g = temp[0]
+                query_number.append(g)
                 Queries.append(temp[1:])
                 
     except IOError:
