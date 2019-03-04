@@ -22,8 +22,8 @@ def main():
         for word in query:
             user_input = word
             user_input = ps.stem(user_input)
-            if user_input not in doc:
-                    temp.append([str(user_input), 0])
+            if user_input not in doc:  #add 0 if query term does not exist in document
+                    temp.append(0)
                     continue
             '''user_input = input('Enter a word: ')
             user_input = ps.stem(user_input)
@@ -44,7 +44,7 @@ def main():
                         tf2 = round(wordIndex2.term_frequency(y, len(doc)), 5)   
                         tfidf = round(wordIndex2.tfidf(tf2, idf2), 5)
                         #print(str(user_input),(str([x, y]), tf2, idf2))     
-                        temp.append([str(user_input), tfidf])
+                        temp.append(tfidf)
                         continue
             
                     #temp.append((word, str([x, y]), t_f, i_d_f, tf_idf))
