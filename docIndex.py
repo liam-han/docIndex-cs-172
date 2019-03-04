@@ -155,19 +155,22 @@ def read_collection(file) -> []:
             counter = 0
             temp = []
             
-            for line in f.readlines():
+            for line in f:
+                if line.lower().startswith('</doc>'):
+                    Documents.append(temp)
+                    temp = []
+                if line.startswith('<'):
+                    continue
                 counter += 1
                 for word in line.lower().split():
-                    if word.startswith('<') or word.endswith('>'):
-                        if word == '</doc>':
+                    '''if word == '</doc>':
                             Documents.append(temp)
-                            temp = []
-                        del word
-                        continue
+                            temp = []'''
                     word = word.translate(t)
                     word = word.replace(" ", "")
                     stem_word = ps.stem(word)
-                    temp.append(stem_word)         
+                    temp.append(stem_word)  
+                        
     except IOError:
         print("Unexpected error:", sys.exc_info()[0])
     stop_words = 'stoplist.txt'
@@ -195,6 +198,9 @@ def read_query() -> []:
     except IOError:
         print("Unexpected error:", sys.exc_info()[0])
 
+    stop_words = 'stoplist.txt'
+    for query in Queries:
+        remove_stop_words(stop_words, query)
     return Queries
 
 
@@ -245,17 +251,16 @@ class wordIndex(object):
 
         return wordIndex
 
-    def term_frequency(self, docfreq, n):
-        document = self.doc
-       
-        freq = docfreq / n
+    def term_frequency(self, frequency, total_num_of_terms):
+        
+        tf = (frequency / total_num_of_terms)
 
-        return freq
+        return tf
 
 
-    def idf(self, d, occurrence) -> float:
-        size = len(d)
-        idf = 1 + math.log2(size / occurrence)
+    def idf(self, total_num_of_documents, num) -> float:
+    
+        idf = 1 + math.log2(total_num_of_documents / num_of_documents_with_term)
 
         return idf
 
