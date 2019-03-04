@@ -31,7 +31,7 @@ for w in word_data:
 
 
 '''
-def read_query() -> []:
+'''def read_query() -> []:
 	Queries = []
 
 	file = 'query_list.txt'
@@ -91,4 +91,7 @@ Queries = read_query()
 for query in Queries:
 	for word in query:
 		print(word)
+
+'''
+
 
