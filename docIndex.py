@@ -9,6 +9,7 @@ from nltk.stem.porter import PorterStemmer
 nltk.download('punkt')
 
 
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -183,6 +184,7 @@ def read_query() -> []:
     Queries = []
     file = 'query_list.txt'
     ps = PorterStemmer()
+    query_number = []
     try:
         with open(file, 'r') as f:
             t = str.maketrans(".,'`:;", "      ")
@@ -193,6 +195,7 @@ def read_query() -> []:
                     word = word.replace(" ", "")
                     stem_word = ps.stem(word)
                     temp.append(stem_word)
+                query_number.append(temp[:1])
                 Queries.append(temp[1:])
                 
     except IOError:
@@ -201,7 +204,7 @@ def read_query() -> []:
     stop_words = 'stoplist.txt'
     for query in Queries:
         remove_stop_words(stop_words, query)
-    return Queries
+    return Queries, query_number
 
 
 def docIndex(document) -> dict():
@@ -222,14 +225,15 @@ def query_execution(documents):
 
     ps = PorterStemmer()
     data = []
-    queries = read_query()
+    q = read_query()
+    queries = q[0]
     for doc in documents:
         temp = []
         for word in doc:
             user_input = word
             user_input = ps.stem(user_input)
             if user_input not in doc:  #add 0 if query term does not exist in document
-                    temp.append([str(user_input), 0])
+                    temp.append(0)
                     continue
             try:
                 result2 = wi2.get(user_input)
@@ -245,7 +249,7 @@ def query_execution(documents):
                         tf2 = round(wordIndex2.term_frequency(y, len(doc)), 5)   
                         tfidf = round(wordIndex2.tfidf(tf2, idf2), 5)
                         #print(str(user_input),(str([x, y]), tf2, idf2))     
-                        temp.append([str(user_input), tfidf])
+                        temp.append(tfidf)
                         continue
             except:
                 pass
@@ -264,7 +268,8 @@ def query_execution2(documents):
 
     ps = PorterStemmer()
     data = []
-    queries = read_query()
+    q = read_query()
+    queries = q[0]
     for query in queries:
         temp2 = []
         for doc in documents:
@@ -273,7 +278,7 @@ def query_execution2(documents):
                 user_input = word
                 user_input = ps.stem(user_input)
                 if user_input not in doc:  #add 0 if query term does not exist in document
-                        temp.append([str(user_input), 0])
+                        temp.append(0)
                         continue
                 try:
                     result2 = wi2.get(user_input)
@@ -289,7 +294,7 @@ def query_execution2(documents):
                             tf2 = round(wordIndex2.term_frequency(y, len(doc)), 5)   
                             tfidf = round(wordIndex2.tfidf(tf2, idf2), 5)
                             #print(str(user_input),(str([x, y]), tf2, idf2))     
-                            temp.append([str(user_input), tfidf])
+                            temp.append(tfidf)
                             continue
                 except:
                     pass        

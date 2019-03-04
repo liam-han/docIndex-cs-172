@@ -95,3 +95,6 @@ for query in Queries:
 '''
 
 
+x = [2,3,4,5]
+x.sort(reverse = True)
+print(x)
